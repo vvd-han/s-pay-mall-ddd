@@ -12,28 +12,28 @@ thread:
         block-queue-size: 5000
         policy: CallerRunsPolicy
 
-# 数据库配置；启动时配置数据库资源信息
 spring:
   datasource:
     username: root
     password: 123456
-    url: jdbc:mysql://127.0.0.1:3306/xfg_frame_archetype?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
+    url: jdbc:mysql://127.0.0.1:3306/s-pay-mall?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai&useSSL=true
     driver-class-name: com.mysql.cj.jdbc.Driver
-  hikari:
-    pool-name: Retail_HikariCP
-    minimum-idle: 15 #最小空闲连接数量
-    idle-timeout: 180000 #空闲连接存活最大时间，默认600000（10分钟）
-    maximum-pool-size: 25 #连接池最大连接数，默认是10
-    auto-commit: true  #此属性控制从池返回的连接的默认自动提交行为,默认值：true
-    max-lifetime: 1800000 #此属性控制池中连接的最长生命周期，值0表示无限生命周期，默认1800000即30分钟
-    connection-timeout: 30000 #数据库连接超时时间,默认30秒，即30000
-    connection-test-query: SELECT 1
-  type: com.zaxxer.hikari.HikariDataSource
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    validationQuery: SELECT 1
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+    filters: stat
 
-# MyBatis 配置【如需使用记得打开】
 #mybatis:
 #  mapper-locations: classpath:/mybatis/mapper/*.xml
-#  config-location:  classpath:/mybatis/config/mybatis-config.xml
+#  config-location: classpath:/mybatis/config/mybatis-config.xml
 
 # 微信公众号对接
 weixin:
@@ -42,7 +42,17 @@ weixin:
     token: 0821
     app-id: wx1a604f4dc2fb7ca9
     app-secret: 4d4441e61d531c4fad1f4699c3cbc3d1
-    template-id: OpNRXXxdsLzdfywJfyAaP97vpBj-s5RLPu4Ta0ASLVI
+    template_id: OpNRXXxdsLzdfywJfyAaP97vpBj-s5RLPu4Ta0ASLVI
+
+# 支付宝支付 - 沙箱 https://opendocs.alipay.com/common/02kkv7
+alipay:
+  enabled: true
+  app_id: 9021000159601215
+  merchant_private_key: MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCYBj6iKwH6jisW0pxYxZZSaOluVZoBQcVxiyNP3dQVUbukY7PLT5Gyaj6EmE8+OyVXIDbRSBOhhYj4fjs6afwuLtQaNcYl9lG2tZh+NuofHGtg7qX6ieNvQR2SHqWtaM1OL19YPIeKVDTWpFRdYdRD/7L9TrE3cgzPNsNvqk7/mWAL5tc63tvogRFGaCv8B14dEPdfgiB3by7BXZe6QvXhJB4uVCFK804zhVh0UCdcqJMH5YsdXSWtVq2GdoVBBkqqa+LPSD1TIP8hNQrfULUcaegF9t6AEvVRKM7aycEaw8ULHhe+Y/4j4G4EGSFXCxmFSEF8U0r0TcBezEUX20dFAgMBAAECggEAUh01YZTHadW20ooKJyz6qCLAy3bzS3CCPHVCKpaQQr+2EfJEoDGnae5XPHmke+Gopqng0iQTbnBZbpeIWGH889kZedrH36NvubfW2X3B8fIA0ge1oWEvdt1+InnpVYRBONT/tAJl18LqE3IJm7MG23/W51nFAUTaRGa5I6yjJQ2XGD1mBVSECbgiqU6sh08wB8e0ACoGnIluaoQP9TZnJ/r6yYgF1WbtOeIdTzTt14WDxfD8I0JCEVYhWfGeDlMKYEgNAiUUGwvi9yWo/uQ0bGC76cD3v5RYssdRoXYyy4JKN4PVfnfBIw2ICWb/RHDK0dD2nIcjHnLPvzXHSHpUFQKBgQDJg9JuGxUF6KEh53D5ezwYBZHmXLCJ2kssjYS7oDDxnZO1pZ6YSdESXxpWElzLEM2QS7amVggNaQ+0aMcRe6gxsVX1I+uY1DNNYH/hU9q4CmCA2UvlfCKqIOzKVIZeifkbyGNE3QwMB18SEPpc+rZ2LtH56lEJ2VDDuYYwl3yNiwKBgQDBINsnfWwlDmqus1vZ654dn2RPamDlakdfZlCOzHZ+Qyh7MEAnCe/FySfS9+TYixhr3kpQ9UByDY9HgjNypKobO/ZwWOzsWbpa/CCPtHxV+Xnr0UIbfFG4FahEppryQddMFGyGR0Rv5Ww6IlJ6IxjuGJwR8VOJGfY5RR2I6Rq4bwKBgCNInIjA3y54q/X2wzY7mKsQFprCMfsBKNZ1NP9xLgCwOZO9mwZJLn1L/52Ae5TmrUeNqj53o9NNSP2qtuhdwXZp+YYBsxfAV/c9ZUa72vkMgBcvdPWKhbtKJovKvvhAqkhuDsuY9KoKhF/ybxPmphoNWqCqoWPbFCQhENjjPWC/AoGAauW3yETo/h3buPU4CwgazcSy7i4wketgtBJa1p+fmsWre3w6liEu4Wg1LdXeiml7TAGPWv5U/Iw62VbdCUDRkx9+ibL++Ne1ibTyhPhetevPq1J5Z+NJDD6Yk98v9pWxCMBpTW3XGKSBYjArPMV+gBOJF3lfRozjN9HkxipYiusCgYAwFg8k27wcij5Pogh3/14oNVckTDFNKxA9A51lk9ru9ovFc2Y2h/NL0jcpPLIy0i+TgHoIC3LAjn86sIVr4ZwWSx4yCscRoVXEYWwFHt+LjhfTsAF5ZW6RQwk2lDrdaSJmf/F5KwcTmxlTgIJMCQbPHUrhBZGsZgZWL98zAz+4SQ==
+  alipay_public_key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvgN5yEjsWIk/avF5EfXij6rustV4GMkoMil7T1G460AOnNZx7q3tYufpjuHd3dAxiFmPoYwfINnKNy+M9UJhxqqhRWf07RLkq+mR9mlmRjlwe2+RyA1l0MJpUTkJAk9z6LLbH1cuqIC9Xf1xJsmlHocCP6L4cX1LKeEmqOOFF6rExZcDZGitzNwxUKiru/YdaCXkrzDBKjgV2X35FJ2OwC1kC72uRRGV92FHb9bVDpMVE+b6m6+xZa4m609aaWFXD0A8JokXo3gyYXNzPlPtLF1JIEs2j0xxh+69j4ZCeS5sRDwXkoaHqcd66Yu9TXCBGLDyqRU5sSVfXBYS0EdwRwIDAQAB
+  notify_url: http://vvd.nat100.top/api/v1/alipay/alipay_notify_url
+  return_url: https://gaga.plus
+  gatewayUrl: https://openapi-sandbox.dl.alipaydev.com/gateway.do
 
 # 日志
 logging:

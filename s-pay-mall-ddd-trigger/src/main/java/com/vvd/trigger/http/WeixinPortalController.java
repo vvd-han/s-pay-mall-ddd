@@ -1,6 +1,7 @@
 package com.vvd.trigger.http;
 
 //import com.vvd.service.ILoginService;
+import com.vvd.domain.auth.service.ILoginService;
 import com.vvd.types.sdk.weixin.MessageTextEntity;
 import com.vvd.types.sdk.weixin.SignatureUtil;
 import com.vvd.types.sdk.weixin.XmlUtil;
@@ -27,8 +28,8 @@ public class WeixinPortalController {
     @Value("${weixin.config.token}")
     private String token;
 
-//    @Resource
-//    private ILoginService loginService;
+    @Resource
+    private ILoginService loginService;
 
     @GetMapping(value = "receive", produces = "text/plain;charset=utf-8")
     public String validate(@RequestParam(value = "signature", required = false) String signature,
@@ -65,10 +66,10 @@ public class WeixinPortalController {
             // 消息转换
             MessageTextEntity message = XmlUtil.xmlToBean(requestBody, MessageTextEntity.class);
 
-//            if (message.getMsgType().equals("event") && message.getEvent().equals("SCAN")) {
-//                loginService.saveLoginState(message.getTicket(), openid);
-//                return buildMessageTextEntity(openid, "登录成功");
-//            }
+            if (message.getMsgType().equals("event") && message.getEvent().equals("SCAN")) {
+                loginService.saveLoginState(message.getTicket(), openid);
+                return buildMessageTextEntity(openid, "登录成功");
+            }
             return buildMessageTextEntity(openid, "你好，" + message.getContent());
         } catch (Exception e) {
             log.error("接收微信公众号信息请求{}失败 {}", openid, requestBody, e);
