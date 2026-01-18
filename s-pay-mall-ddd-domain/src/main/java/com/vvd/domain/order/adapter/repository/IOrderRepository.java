@@ -5,6 +5,8 @@ import com.vvd.domain.order.model.entity.OrderEntity;
 import com.vvd.domain.order.model.entity.PayOrderEntity;
 import com.vvd.domain.order.model.entity.ShopCartEntity;
 
+import java.util.List;
+
 /**
  * @author vvd
  * @description
@@ -16,4 +18,12 @@ public interface IOrderRepository {
     OrderEntity queryUnPayOrder(ShopCartEntity shopCartEntity);
 
     void updateOrderPayInfo(PayOrderEntity payOrderEntity);
+
+    void changeOrderPaySuccess(String orderId);
+
+    List<String> queryNoPayNotifyOrder();
+
+    List<String> queryTimeoutCloseOrderList();
+
+    boolean changeOrderClose(String orderId);
 }

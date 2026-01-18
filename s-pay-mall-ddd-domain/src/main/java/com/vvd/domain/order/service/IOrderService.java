@@ -14,5 +14,12 @@ public interface IOrderService {
 
     PayOrderEntity createOrder(ShopCartEntity shopCartEntity) throws Exception;
 
+    void changeOrderPaySuccess(String orderId);
+
+    List<String> queryNoPayNotifyOrder();
+
+    List<String> queryTimeoutCloseOrderList();
+
+    boolean changeOrderClose(String orderId);
 
 }

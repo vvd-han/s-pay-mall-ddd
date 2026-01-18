@@ -69,4 +69,23 @@ public class OrderService extends AbstractOrderService {
         repository.doSaveOrder(orderAggregate);
     }
 
+    @Override
+    public void changeOrderPaySuccess(String orderId) {
+        repository.changeOrderPaySuccess(orderId);
+    }
+
+    @Override
+    public List<String> queryNoPayNotifyOrder() {
+        return repository.queryNoPayNotifyOrder();
+    }
+
+    @Override
+    public List<String> queryTimeoutCloseOrderList() {
+        return repository.queryTimeoutCloseOrderList();
+    }
+
+    @Override
+    public boolean changeOrderClose(String orderId) {
+        return repository.changeOrderClose(orderId);
+    }
 }
