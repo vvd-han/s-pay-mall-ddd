@@ -27,7 +27,7 @@ public class GuavaConfig {
     }
 
     @Bean
-    public EventBus eventBusListener(OrderPaySuccessListener listener){
+    public EventBus eventBusListener(OrderPaySuccessListener listener) {
         EventBus eventBus = new EventBus();
         eventBus.register(listener);
         return eventBus;
