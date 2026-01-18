@@ -31,9 +31,9 @@ spring:
     maxPoolPreparedStatementPerConnectionSize: 20
     filters: stat
 
-#mybatis:
-#  mapper-locations: classpath:/mybatis/mapper/*.xml
-#  config-location: classpath:/mybatis/config/mybatis-config.xml
+mybatis:
+  mapper-locations: classpath:/mybatis/mapper/*.xml
+  config-location:  classpath:/mybatis/config/mybatis-config.xml
 
 # 微信公众号对接
 weixin:
